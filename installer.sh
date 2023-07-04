@@ -83,7 +83,7 @@ sudo apt install -y picom rofi dunst libnotify-bin unzip
 #sudo apt install -y mpv figlet qimgv l3afpad galculator redshift cpu-x galculator ghostwriter
 
 # Install LibreOffice
-apt install libreoffice
+sudo apt install libreoffice
 
 # Install Lightdm Console Display Manager
 sudo apt install -y lightdm lightdm-gtk-greeter-settings
