@@ -5,7 +5,7 @@
 # Install packages after installing base Debian with no GUI
 
 # xorg display server installation
-sudo apt install -y xorg xbacklight xbindkeys xvkbd xinput
+sudo apt install -y xorg brightnessctl xbindkeys xvkbd xinput
 
 # PACKAGE INCLUDES build-essential.
 sudo apt install -y build-essential
@@ -37,7 +37,7 @@ sudo apt install -y policykit-1-gnome network-manager network-manager-gnome
 sudo apt install -y thunar thunar-archive-plugin thunar-volman file-roller
 
 # Terminal (eg. terminator,kitty,xfce4-terminal)
-sudo apt install -y tilix kitty
+sudo apt install -y alacritty
 
 # Sound packages
 sudo apt install -y pulseaudio alsa-utils pavucontrol volumeicon-alsa pamixer
@@ -60,7 +60,7 @@ sudo apt install -y firefox-esr
 sudo apt install -y feh
  
 # Fonts and icons for now
-sudo apt install -y fonts-recommended fonts-ubuntu fonts-font-awesome fonts-terminus
+sudo apt install -y fonts-recommended fonts-font-awesome fonts-terminus
 
 # EXA installation
 # replace ls command in .bashrc file with line below
@@ -70,22 +70,27 @@ sudo apt install -y exa
 
 # Printing and bluetooth (if needed)
 # sudo apt install -y cups system-config-printer simple-scan
-# sudo apt install -y bluez blueman
+sudo apt install -y bluez blueman
 
 # sudo systemctl enable cups
-# sudo systemctl enable bluetooth
+sudo systemctl enable bluetooth
 
 # Packages needed for window manager installation
 sudo apt install -y picom rofi dunst libnotify-bin unzip 
 
 # my favs
-sudo apt install -y numlockx geany geany-plugin-addons geany-plugin-git-changebar geany-plugin-overview geany-plugin-spellcheck geany-plugin-treebrowser geany-plugin-vimode scrot evince pdfarranger transmission-gtk gimp obs-studio mkvtoolnix-gui
-sudo apt install -y mpv figlet qimgv l3afpad galculator redshift cpu-x galculator ghostwriter
+#sudo apt install -y numlockx geany geany-plugin-addons geany-plugin-git-changebar geany-plugin-overview geany-plugin-spellcheck geany-plugin-treebrowser geany-plugin-vimode scrot evince pdfarranger transmission-gtk gimp obs-studio mkvtoolnix-gui
+#sudo apt install -y mpv figlet qimgv l3afpad galculator redshift cpu-x galculator ghostwriter
+
+# Install LibreOffice
+apt install libreoffice
 
 # Install Lightdm Console Display Manager
 sudo apt install -y lightdm lightdm-gtk-greeter-settings
 sudo systemctl enable lightdm
 
+# Dev stuff
+sudo apt install nodejs npm php
 
 ########################################################
 # End of script for default config
@@ -98,7 +103,37 @@ bash ~/bookworm-scripts/resources/nerdfonts.sh
 
 \cp ~/bookworm-scripts/resources/.bashrc ~
 
+# Install Brave Browser
+sudo apt install curl
+sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+sudo apt update
+sudo apt install brave-browser
 
+# VSCode
+sudo apt-get install wget gpg
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+rm -f packages.microsoft.gpg
+sudo apt install apt-transport-https
+sudo apt update
+sudo apt install code
+
+# Docker
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Clean up
 sudo apt autoremove
 
 printf "\e[1;32mYou can now reboot! Thanks you.\e[0m\n"
